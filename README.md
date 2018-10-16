@@ -1,2 +1,2 @@
 # Fertilizer
-Fertilizer will slowly decay. Place absorbing pots on the same vertical level. If there is a flora node (like a flower) on any of the pots, there is a chance it will be fertilized and spread to another of the pots adjacent to the same block of fertilizer.
+Fertilizer will slowly decay. Place absorbing pots on the same vertical level. If there is a flora node (like a flower) on any of the pots, there is a chance it will be fertilized and spread to another of the pots adjacent to the same block of fertilizer (assuming the top of the pot is clear and lit to at least level 10).

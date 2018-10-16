@@ -38,7 +38,7 @@ for i=1,num_fertilizer_nodes do
                     if minetest.get_item_group(minetest.get_node(check).name, "flora_pot") > 0 then
                         if minetest.get_item_group(minetest.get_node(above).name, "flora") > 0 then
                             table.insert(flora, above)
-                        elseif minetest.get_node(above).name == "air" then
+                        elseif minetest.get_node(above).name == "air" and (minetest.get_node_light(above) or 0) >= 10 then
                             table.insert(empty, above)
                         end
                     end
