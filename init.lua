@@ -15,9 +15,13 @@ for i=1,num_fertilizer_nodes do
             },
         },
         tiles = {"default_dirt.png^[colorize:#333:127"},
+        sounds = default.node_sound_dirt_defaults(),
 
         groups = {fertilizer = 1, not_in_creative_inventory = (i == 1) and 0 or 1, crumbly = 3},
         drop = (i == 1) and "fertilepots:fertilizer_1" or "",
+
+        _doc_items_longdesc = "Decays into nearby Absorbing Pots.",
+        _doc_items_create_entry = (i == 1),
 
         on_construct = function(pos)
             minetest.get_node_timer(pos):start(math.max(1, math.random(cycle_time - variation / 2, cycle_time + variation / 2) / num_fertilizer_nodes))
@@ -52,6 +56,10 @@ for i=1,num_fertilizer_nodes do
             end
         end,
     })
+
+    if i ~= 1 and minetest.get_modpath("doc") then
+        doc.add_entry_alias("nodes", "fertilepots:fertilizer_1", "nodes", name)
+    end
 end
 
 minetest.register_craft{
@@ -74,6 +82,8 @@ minetest.register_craft{
 
 minetest.register_node("fertilepots:pot", {
     description = "Fertilizer Absorbing Pot",
+    _doc_items_longdesc = "When placed on the same vertical level as fertilizer, flora on a pot may spread to another pot adjacent to the same fertilizer.",
+    sounds = default.node_sound_dirt_defaults(),
     groups = {flora_pot = 1, cracky = 3, oddly_breakable_by_hand = 3},
     tiles = {
         "default_dirt.png",
