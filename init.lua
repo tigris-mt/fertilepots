@@ -4,6 +4,7 @@ local variation = 1 * 60
 
 for i=1,num_fertilizer_nodes do
     local name = "fertilepots:fertilizer_" .. i
+    -- Next node in the progression, or air if this is the last.
     local next_name = (i ~= num_fertilizer_nodes) and ("fertilepots:fertilizer_" .. (i + 1)) or "air"
     minetest.register_node(name, {
         description = "Fertilizer",
@@ -11,6 +12,7 @@ for i=1,num_fertilizer_nodes do
         node_box = {
             type = "fixed",
             fixed = {
+                -- Node shrinks as it progresses.
                 {-0.5, -0.5, -0.5, 0.5, 0.5 - (0.1 * (i - 1)), 0.5},
             },
         },
@@ -24,24 +26,34 @@ for i=1,num_fertilizer_nodes do
         _doc_items_create_entry = (i == 1),
 
         on_construct = function(pos)
+            -- Start the variated timer.
             minetest.get_node_timer(pos):start(math.max(1, math.random(cycle_time - variation / 2, cycle_time + variation / 2) / num_fertilizer_nodes))
         end,
 
         on_timer = function(pos)
+            -- Go to the next time.
             minetest.set_node(pos, {name = next_name})
 
+            -- By chance spread flora.
             if math.random() < 0.2 then
+                -- Coordinate lists.
                 local empty = {}
                 local flora = {}
 
+                -- Search on the same vertical coordinate.
                 for x=-1,1 do
                 for z=-1,1 do
+                    -- Pot.
                     local check = vector.add(pos, vector.new(x, 0, z))
+                    -- Flora or empty.
                     local above = vector.add(check, vector.new(0, 1, 0))
 
+                    -- Check types.
                     if minetest.get_item_group(minetest.get_node(check).name, "flora_pot") > 0 then
+                        -- Add flora.
                         if minetest.get_item_group(minetest.get_node(above).name, "flora") > 0 then
                             table.insert(flora, above)
+                        -- Add empty if enough light.
                         elseif minetest.get_node(above).name == "air" and (minetest.get_node_light(above) or 0) >= 10 then
                             table.insert(empty, above)
                         end
@@ -49,7 +61,9 @@ for i=1,num_fertilizer_nodes do
                 end
                 end
 
+                -- If have both flora and empty.
                 if #flora > 0 and #empty > 0 then
+                    -- Set random empty to random flora.
                     minetest.set_node(empty[math.random(#empty)], {
                         name = minetest.get_node(flora[math.random(#flora)]).name})
                 end
