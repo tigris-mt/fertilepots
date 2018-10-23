@@ -120,8 +120,8 @@ minetest.register_node("fertilepots:pot", {
 minetest.register_craft{
     output = "fertilepots:pot",
     recipe = {
-        {"default:brick", "group:soil", "default:brick"},
-        {"default:brick", "group:soil", "default:brick"},
-        {"", "default:brick", ""},
+        {"default:clay_brick", "group:soil", "default:clay_brick"},
+        {"default:clay_brick", "group:soil", "default:clay_brick"},
+        {"", "default:clay_brick", ""},
     },
 }
